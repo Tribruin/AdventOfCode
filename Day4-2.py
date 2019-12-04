@@ -4,8 +4,8 @@ import time
 
 lowerRange = 158126
 upperRange = 624574
-testGroup = [111111, 223450, 123789, 113333, 111122, 123444, 111122, 111222]
-
+# testGroup = [111111, 223450, 123789, 113333, 111122, 123444, 111122, 111222]
+# testGroup = [113333]
 
 
 class combo(): 
@@ -32,11 +32,13 @@ class combo():
 			return duplicate
 			
 		for i in range(len(self.strNumber)-1):
+# 			print("Found {0} of {1} in {2}".format(self.strNumber.count(self.strNumber[i]), self.strNumber[i], self.strNumber))
 			if self.strNumber[i] == self.strNumber[i+1]:
 				if self.strNumber.count(self.strNumber[i]) > 2:
 					duplicate = False
 				else:
 					duplicate = True
+					break
 		return duplicate
 		
 	def checkForIncrease(self):
@@ -59,11 +61,11 @@ def checkRangeOfNumbers(startNumber, endNumber):
 
 def main():
 
-	for test in testGroup:
-		print(combo(test).output())
+# 	for test in testGroup:
+# 		print(combo(test).output())
 
-# 	goodNums = checkRangeOfNumbers(lowerRange, upperRange)
-# 	print ("{0} Good Combinations found in Range {1} - {2}".format(len(goodNums), lowerRange, upperRange))
+	goodNums = checkRangeOfNumbers(lowerRange, upperRange)
+	print ("{0} Good Combinations found in Range {1} - {2}".format(len(goodNums), lowerRange, upperRange))
 
 
 if __name__ == "__main__":
