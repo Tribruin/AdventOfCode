@@ -22,31 +22,26 @@ class combo():
 		return returnString
 		
 	def checkForDuplicate(self):
-		print(filter(lamda x : count(x) == 2, list (self.strNumber)))
-		duplicate = filter(lamba x : count(x) == 2, list(self.strNumber))
-		
-
-		return duplicate
-		
+		if self.isIncreasing:	
+			return (len(list(filter(lambda x : self.strNumber.count(x) == 2, list(self.strNumber)))) > 1)
+		else:
+			return False
+	
 	def checkForIncrease(self):
 		return ( list(self.strNumber) == sorted(self.strNumber))
 		
 def checkRangeOfNumbers(startNumber, endNumber):
-	goodNumbers = []
-	for i in range(startNumber, endNumber + 1):
-		checkNum = combo(i)
-		if checkNum.hasDuplicate:
-			goodNumbers.append(i)
+	goodNumbers = list(filter(lambda x: combo(x).hasDuplicate, range(startNumber, endNumber)))
 	
 	return goodNumbers
 
 def main():
 
-	for test in testGroup:
-		print(combo(test).output())
+# 	for test in testGroup:
+# 		print(combo(test).output())
 
-# 	goodNums = checkRangeOfNumbers(lowerRange, upperRange)
-# 	print ("{0} Good Combinations found in Range {1} - {2}".format(len(goodNums), lowerRange, upperRange))
+	goodNums = checkRangeOfNumbers(lowerRange, upperRange)
+	print ("{0} Good Combinations found in Range {1} - {2}".format(len(goodNums), lowerRange, upperRange))
 
 
 if __name__ == "__main__":
