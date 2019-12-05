@@ -10,44 +10,27 @@ expectedResult = 19690720
 def executeProgram(inputArray):
 
 	def performFunction(operation, a, b):
-	# 	print(a,b)
-		if operation == 1:
-			return a + b
-		elif operation == 2:
-			return a * b
-		else:
-			print("ERROR: Operand: {0}, A & B: {1}, {2}".format(operation, a, b))
-
-	# Iterate through program
+		return ((a + b) * (operation == 1)) + ((a * b) * (operation == 2))
 
 	position = 0 
 	while (inputArray[position] != 99):
 		opperand, aPos, bPos, resultPos = list(inputArray[position:position + 4])
-		result = performFunction(opperand, inputArray[aPos], inputArray[bPos])
-		inputArray[resultPos] = result
+		inputArray[resultPos] = performFunction(opperand, inputArray[aPos], inputArray[bPos])
 		position = position + 4
 
 	return inputArray
 
 def checkArray():
-	noun = 0
 
-	while noun < 100:
-
-		verb = 0 
-		while verb < 100:
-
+	for noun in range(100):
+		for verb in range(100):
 			# Reset Input Array
 			currentArray = list(map(lambda x : int(x), defaultInputString.split(",")))
 			currentArray[1] = noun
 			currentArray[2] = verb
 			outputArray = executeProgram(currentArray)
-			if int(outputArray[0]) == expectedResult:
+			if outputArray[0] == expectedResult:
 				return noun, verb, outputArray
-			
-			verb += 1
-	
-		noun += 1
 
 def main():
 	
