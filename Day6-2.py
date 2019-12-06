@@ -1,11 +1,14 @@
 #!/usr/local/bin/python3
 from operator import itemgetter
+import sys 
 
 log = False
+startName = "YOU"
+endName = "SAN"
 
 # Test Data
 
-# planetInput = "Day6-Test2.txt"
+# planetInput = "Day6-Test3.txt"
 
 # Actual Data
 planetInput = "Day6-Input-Final.txt"
@@ -18,25 +21,25 @@ def printToLog(out):
 
 class Planet:
 
-	def __init__(self, objectName, parentObject):
+	def __init__(self, objectName, parent):
 		self.name = objectName
 		self.moons = []
-		self.parentObject = parentObject
+		self.parent = parent
 		try: 
-			self.parentName = parentObject.name
+			self.parentName = parent.name
 		except:
 			self.parentName = "None"
 		self.planetData = self.planetData()
-		if self.parentObject != None:
-			parentObject.addOrbit(self)
+		if self.parent != None:
+			parent.addOrbit(self)
 		return
 		
 	def numberOfParentPlanets(self):
 		parentOrbits = 0
-		if self.parentObject == None:
+		if self.parent == None:
 			parentPlanets = 0
 		else:
-			parentPlanets = 1 + self.parentObject.numberOfParentPlanets()
+			parentPlanets = 1 + self.parent.numberOfParentPlanets()
 		return parentPlanets
 			
 	
@@ -111,12 +114,69 @@ def createPlanetsFromParent(planetInput, parentPlanet):
 			returnInput += createPlanetsFromParent(planetInput, newPlanet)
 
 	return returnInput
+
 	
 def totalNumberOfOrbits(planetArray):
 	orbits = 0
 	for planet in planetArray:
 		orbits += planet.numberOfParentPlanets()
 	return orbits
+
+def totalNumberOfTransfers(startPlanet, endPlanet):
+			
+	def findCommonPlanet(startPlanet, endPlanet):
+	
+		def returnListOfParentPlanet(planet):
+		
+			planets = []
+			printToLog("Checking for Parents of {0}".format(planet.name))		
+			if planet.parent == None:
+				printToLog("**** FOUND THE EDGE OF THE UNIVERSE ****")
+				return [planet]
+			else:
+				planets.append(planet)
+				planets = planets + returnListOfParentPlanet(planet.parent)
+				return planets
+	
+		# Find intersecting Planets
+		printToLog(str(startPlanet) + str(endPlanet))
+		startPlanetParents = returnListOfParentPlanet(startPlanet.parent)
+		endPlanetParents = returnListOfParentPlanet(endPlanet.parent)
+		printToLog(list(map(lambda x : str(x), startPlanetParents)))
+		printToLog(list(map(lambda x : str(x), endPlanetParents)))
+		commonParents = list(set(startPlanetParents).intersection(set(endPlanetParents)))
+		printToLog(list(map(lambda x : str(x), commonParents)))
+		
+		# Now find the closest planet to both startPlanet
+		# By default, this will also be the closest distance to endPlanet
+		
+		closestPlanet = commonParents.pop(0)
+		closestDistance = transfersBetweenPlanets(startPlanet, closestPlanet)
+		for planet in commonParents:
+			checkDistance = transfersBetweenPlanets(startPlanet, planet)
+			if checkDistance < closestDistance:
+				closestPlanet = planet
+				closestDistance = checkDistance
+				
+		return closestPlanet
+		
+
+	def transfersBetweenPlanets(startPlanet, endPlanet):
+		
+		if startPlanet == endPlanet:
+			return 0
+		else:
+			return 1 + transfersBetweenPlanets(startPlanet.parent, endPlanet)
+		
+	commonPlanet = findCommonPlanet(startPlanet, endPlanet)
+	printToLog("Found Common Planet: {0}".format(commonPlanet.name))
+	transfer1 = transfersBetweenPlanets(startPlanet,commonPlanet)
+	printToLog("\tTransfers Between Planet {0} and {1} is: {2}".format(startPlanet.name,commonPlanet.name, transfer1))
+	transfer2 = transfersBetweenPlanets(endPlanet, commonPlanet)
+	printToLog("\tTransfers Between Planet {0} and {1} is: {2}".format(endPlanet.name,commonPlanet.name, transfer2))
+	
+	return transfer1 + transfer2
+	
 	
 def main():
 	planets, COMName = getInputFromFile(planetInput)
@@ -130,6 +190,10 @@ def main():
 	printPlanets(planetArray)
 	print("Total number of orbits: {0}".format(totalNumberOfOrbits(planetArray)))
 		
+	myPlanet = list(filter(lambda x : x.name == startName, planetArray))[0]
+	santaPlanet = list(filter(lambda x : x.name == endName, planetArray))[0]
+	
+	print("Total number of Transfers from {0} to {1} is {2}".format(myPlanet.name, santaPlanet.name, totalNumberOfTransfers(myPlanet.parent, santaPlanet.parent)))
 		
 
 if __name__ == "__main__":
