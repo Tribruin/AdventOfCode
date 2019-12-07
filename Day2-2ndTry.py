@@ -53,7 +53,6 @@ class IntcodeComputer:
 				print("*** ILLEGAL MASK {0} ***".format(mask))
 		# Append Location store
 		returnParms.append(int(parms[-1]))
-		
 		return returnParms
 				
 		
@@ -69,7 +68,6 @@ class IntcodeComputer:
 	def returnCode(self, location):
 		return int(self.programCode[location])
 		
-	
 	def execCode(self):
 		""" Execute Code """
 	
@@ -116,11 +114,10 @@ def testComputer():
 			computer = IntcodeComputer(testInput)
 			computer.updateLocation(1, noun)
 			computer.updateLocation(2, verb)
-
 			computer.execCode()
 			if computer.returnCode(0) == testValue:
 				return noun, verb
-	
+
 	return 0,0
 			
 def main():

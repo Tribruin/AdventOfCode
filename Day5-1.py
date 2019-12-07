@@ -36,19 +36,18 @@ def executeProgram():
 		returnArray = []
 		parameterArray = list(map(lambda x : int(x), parameterArray))
 		for i in range(valsToReturn - 1):
-# 			print(i, mask, valsToReturn, parameterArray)
+			print(i, mask, valsToReturn, parameterArray)
 			if mask[i] == '0':
-# 				print("Getting Array Value")
+				print("Getting Array Value")
 				x = int(inputArray[parameterArray[i]])
-# 				print("Array Position: {0} is {1}".format(parameterArray[i], x))
+				print("Array Position: {0} is {1}".format(parameterArray[i], x))
 			elif mask[i] == '1':
-# 				print("Getting Parameter Value")
+				print("Getting Parameter Value")
 				x = int(parameterArray[i])
-# 				print("Parameter Value is {0}".format(x))
-#			x = ((int(mask[i]) == 0) * int(valueArray[int(parameterArray[i])) + ((int(mask[i] == 1)) * int(parameterArray[i]))
+				print("Parameter Value is {0}".format(x))
 			returnArray.append(x)
 		returnArray.append(int(parameterArray[-1]))
-# 		print("ExecutionArray: {0}".format(returnArray))
+		print("ExecutionArray: {0}".format(returnArray))
 		return returnArray
 			
 		
@@ -66,13 +65,13 @@ def executeProgram():
 
 		if operand in [1, 2]:
 			a, b, c = computeParameters(mask, 3, inputArray[opCounter + 1 : opCounter + 4])
-# 			print("Performing Function {0} with Parameters ({1}, {2}) and Output Position[{3}]".format(operand, a, b, c))
+			print("Performing Function {0} with Parameters ({1}, {2}) and Output Position[{3}]".format(operand, a, b, c))
 			returnVal = performFunction(operand, a, b, c)
 			
 
 		elif operand in [3, 4]:
 			a = computeParameters(mask, 1, inputArray[opCounter + 1 : opCounter + 2])[0]
-# 			print("Performing Function {0} with Position[{1}]".format(operand, a))
+			print("Performing Function {0} with Position[{1}]".format(operand, a))
 			returnVal = performFunction(operand,a)
 
 		elif operand in [99]:
