@@ -3,7 +3,7 @@
 # log = True
 log = False
 
-validInstructions = [1,2,3,4,99]
+validInstructions = [1,2,3,4,5,6,7,8,99]
 
 
 #Test Input
@@ -105,7 +105,7 @@ class IntcodeComputer:
 			
 			elif instruction == 2:
 				parms = self.getParameters(3, mask)
-				outputLocation = parms[2]
+				outputLocation = parms[-1]
 				x, y = parms[0], parms[1]
 				a = x * y
 				self.updateLocation(outputLocation, a)
@@ -114,7 +114,7 @@ class IntcodeComputer:
 				
 			elif instruction == 3:
 				parms = self.getParameters(1, mask)
-				outputLocation = parms[0]
+				outputLocation = parms[-1]
 				x = input("Enter Code: ")
 				self.updateLocation(outputLocation,x)
 				printToLog("\tReceived Input {0} and stored in Position: {1}".format(x,outputLocation))
@@ -123,7 +123,7 @@ class IntcodeComputer:
 			elif instruction == 4:
 				parms = self.getParameters(1, mask)
 				if mask[0] == '0':
-					inputLocation = parms[0]
+					inputLocation = parms[-1]
 					x = self.returnCode(inputLocation)
 				else:
 					x = int(parms[0])
@@ -131,6 +131,16 @@ class IntcodeComputer:
 				print("!!! Execution Code: {0}".format(x))
 				printToLog("\tPrinted value: {0} from Position: {1}".format(x, inputLocation))
 				self.currentIndex += 2
+
+			elif instruction == 5:
+				parms = self.getParameters(2, mask)
+				outputLocation = parms[-1]
+				x, y = parms[0], parms[1]
+				a = x * y
+				self.updateLocation(outputLocation, a)
+				printToLog("\tExecute {0} * {1} with result: {2} and stored in Position: {3}".format(x,y, a, outputLocation))
+				self.currentIndex += 4
+				
 			
 			else:
 				# Executing Code 99
