@@ -1,7 +1,10 @@
 #!/usr/local/bin/python3
 
-# log = True
-log = False
+import sys
+from io import StringIO
+
+log = True
+# log = False
 
 validInstructions = [1,2,3,4,5,6,7,8,99]
 
@@ -26,7 +29,7 @@ projectInput = "3,225,1,225,6,6,1100,1,238,225,104,0,1101,32,43,225,101,68,192,2
 
 def printToLog(out):
 	if log:
-		print(out)
+		print(out, file=sys.stderr)
 	return
 
 
