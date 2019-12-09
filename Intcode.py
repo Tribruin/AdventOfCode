@@ -11,6 +11,7 @@ class IntcodeComputer:
 		self.programCode = program.split(",")
 		self.currentIndex = 0
 		self.steps = 0
+		self.relativeBase = 0
 		self.inputValues = []
 		self.outputValues = []
 		self.manualInput = True
@@ -89,7 +90,7 @@ class IntcodeComputer:
 			self.__printToLog(2, "\tExecuting Code: {0} with Mask: {1}".format(instruction, mask))
 	
 			if instruction not in self.validInstructions:
-				print(0, "** Illegal Instruction Code: {0} at Position: {1} and Step: {2}".format(instruction, self.currentIndex, self.steps))
+				self.__printToLog(0, "** Illegal Instruction Code: {0} at Position: {1} and Step: {2}".format(instruction, self.currentIndex, self.steps))
 				exit()
 		
 			if instruction == 1:
