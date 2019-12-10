@@ -20,7 +20,11 @@ class IntcodeComputer:
 		self.validInstructions = [1,2,3,4,5,6,7,8,9,99]
 		
 	def __printToLog(self, level, out):
+		if level == 0:
+			out = "*** ERROR: " + out + "***"
+			print(out, file = sys.stderr)
 		if level <= self.logLevel :
+			out = "  "*(level-1) + out
 			print(out, file = sys.stderr)
 		return
 		
@@ -33,10 +37,10 @@ class IntcodeComputer:
 		else:
 			self.__printToLog(0, "*** ILLEGAL MASK {0} ***".format(mask))
 			
-		self.__printToLog(3,"\t\t\tStoring {0} in Location: {1}".format(value, location))
+		self.__printToLog(3,"Storing {0} in Location: {1}".format(value, location))
 		if location > len(self.programCode) - 1:
-			self.__printToLog(3, "\t\t\tExtending Program Code by: {0} steps".format(location - len(self.programCode) + 1))
-			self.__printToLog(3, "\t\t\tNew Program Code Lenght: {0}".format(len(self.programCode)))
+			self.__printToLog(3, "Extending Program Code by: {0} steps".format(location - len(self.programCode) + 1))
+			self.__printToLog(3, "New Program Code Lenght: {0}".format(len(self.programCode)))
 			self.programCode.extend((location - len(self.programCode) + 1) * ['0'])
 		self.programCode[location] = str(value)
 		return location
@@ -46,24 +50,24 @@ class IntcodeComputer:
 		if mask == '0':
 			location = checkValue
 			x = self.programCode[location]
-			self.__printToLog(2, "\t\tGetting Position Value {0} from Position {1}".format(x, location))
+			self.__printToLog(2, "Getting Position Value {0} from Position {1}".format(x, location))
 		elif mask == '1':
-			self.__printToLog(2, "\t\tGetting Immediate Value {0} ".format(checkValue))
+			self.__printToLog(2, "Getting Immediate Value {0} ".format(checkValue))
 			return checkValue, "N/A"
 		elif mask == '2':
 			location = self.relativeBase + checkValue
 			x = self.programCode[location]
-			self.__printToLog(2, "\t\tGetting Relative Value {0} from Position {1} using Relative Base: {2} and Offset: {3}".format(x,location, self.relativeBase, location ))
+			self.__printToLog(2, "Getting Relative Value {0} from Position {1} using Relative Base: {2} and Offset: {3}".format(x,location, self.relativeBase, checkValue ))
 		else:
-			self.__printToLog(0, "*** ILLEGAL MASK {0} ***".format(mask))		
+			self.__printToLog(0, "ILLEGAL MASK {0}".format(mask))		
 	
 		# Check to see if location is outside current program, if so extend
-		self.__printToLog(3,"\t\t\tReading from Location: {0}".format(location))
+		self.__printToLog(3,"Reading from Location: {0}".format(location))
 		if location > len(self.programCode) + 1:
-			self.__printToLog(3, "\t\t\tExtending Program Code by: {0} steps".format(location - len(self.programCode) + 1))
+			self.__printToLog(3, "Extending Program Code by: {0} steps".format(location - len(self.programCode) + 1))
 			self.programCode.extend((location - len(self.programCode) + 1) * ['0'])
 		returnValue = self.programCode[location]
-		self.__printToLog(3,"\t\t\tReturn Value: {0}".format(location))
+		self.__printToLog(3,"Return Value: {0}".format(x))
 		return x, location
 			
 # 	def readFromFile(self, inputFileName):
@@ -75,12 +79,12 @@ class IntcodeComputer:
 		strParameters = self.programCode[self.currentIndex+1 : self.currentIndex + number + 1]
 		parameters = list(map(lambda x : int(x), strParameters))
 		parms = self.evaluateParms(parameters, mask)
-		self.__printToLog(1, "\t\tReturn Parameters: {0}".format(parms))
+		self.__printToLog(1, "Return Parameters: {0}".format(parms))
 		return parms
 		
 	def evaluateParms(self, parms, mask):
 		""" Evaluate Parms base on Mask and return real Parameter Values """
-		self.__printToLog(1, "\t\tPassed Parameters: {0}".format(parms))
+		self.__printToLog(1, "Passed Parameters: {0}".format(parms))
 		lenOfParms = len(parms)
 		returnParms=[]
 		for i in range(lenOfParms-1):
@@ -118,10 +122,10 @@ class IntcodeComputer:
 			self.__printToLog(1,"--------------------------------------------------")
 			self.__printToLog(4, self.programCode)
 			instruction, mask = self.getInstruction()		
-			self.__printToLog(2, "\tExecuting Code: {0} with Mask: {1}".format(instruction, mask))
+			self.__printToLog(2, "Executing Code: {0} with Mask: {1}".format(instruction, mask))
 	
 			if instruction not in self.validInstructions:
-				self.__printToLog(0, "** Illegal Instruction Code: {0} at Position: {1} and Step: {2}".format(instruction, self.currentIndex, self.steps))
+				self.__printToLog(0, "Illegal Instruction Code: {0} at Position: {1} and Step: {2}".format(instruction, self.currentIndex, self.steps))
 				exit()
 		
 			if instruction == 1:
@@ -130,7 +134,7 @@ class IntcodeComputer:
 				a = x + y
 				outputArray = (outputLoc, mask[2])
 				outputLocation = self.writeLocation(outputArray, a)
-				self.__printToLog(2, "\tExecute {0} + {1} with result: {2} and stored in Position: {3}".format(x,y, a, outputLocation))
+				self.__printToLog(2, "Execute {0} + {1} with result: {2} and stored in Position: {3}".format(x,y, a, outputLocation))
 				self.currentIndex += 4
 
 			
@@ -140,7 +144,7 @@ class IntcodeComputer:
 				a = x * y
 				outputArray = (outputLoc, mask[2])
 				outputLocation = self.writeLocation(outputArray, a)
-				self.__printToLog(2, "\tExecute {0} * {1} with result: {2} and stored in Position: {3}".format(x,y, a, outputLocation))
+				self.__printToLog(2, "Execute {0} * {1} with result: {2} and stored in Position: {3}".format(x,y, a, outputLocation))
 				self.currentIndex += 4
 				
 			elif instruction == 3:
@@ -149,7 +153,7 @@ class IntcodeComputer:
 				x = input()
 				outputLocation = self.writeLocation(outputLoc,x)
 				
-				self.__printToLog(2, "\tReceived Input {0} and stored in Position: {1}".format(x,outputLocation))
+				self.__printToLog(2, "Received Input {0} and stored in Position: {1}".format(x,outputLocation))
 				self.currentIndex += 2
 			
 			elif instruction == 4:
@@ -158,7 +162,7 @@ class IntcodeComputer:
 				location = parms[0]
 				x, inputLocation = self.readFromLocation(outputLoc)
 				print(x)
-				self.__printToLog(2, "\tPrinted value: {0} from Position: {1}".format(x, inputLocation))
+				self.__printToLog(2, "Printed value: {0} from Position: {1}".format(x, inputLocation))
 				self.currentIndex += 2
 
 			elif instruction == 5:
@@ -170,7 +174,7 @@ class IntcodeComputer:
 					self.currentIndex = int(newLocation)
 				else: 
 					newLocation = self.currentIndex + 3
-				self.__printToLog(2, "\tValue {0} is {1}, jumping to Position: {2}".format(valueToCheck, (valueToCheck != 0), newLocation))
+				self.__printToLog(2, "Value {0} != 0 is {1}, jumping to Position: {2}".format(valueToCheck, (valueToCheck != 0), newLocation))
 				self.currentIndex = int(newLocation)
 				
 			elif instruction == 6:
@@ -182,7 +186,7 @@ class IntcodeComputer:
 					self.currentIndex = newLocation
 				else: 
 					newLocation = self.currentIndex + 3
-				self.__printToLog(2, "\tValue {0} is {1}, jumping to Position: {2}".format(valueToCheck, not (valueToCheck != 0), newLocation))
+				self.__printToLog(2, "Value {0} = 0 is {1}, jumping to Position: {2}".format(valueToCheck, not (valueToCheck != 0), newLocation))
 				self.currentIndex = int(newLocation)
 
 			elif instruction == 7:
@@ -191,7 +195,7 @@ class IntcodeComputer:
 				outputLoc = (locValue, mask[2])
 				result = (valueToCheck1 < valueToCheck2)
 				location = self.writeLocation(outputLoc, int(result))
-				self.__printToLog(2, "\tValue {0} < {1} is {2}, storing {3} in Position: {4}".format(valueToCheck1, valueToCheck2, result, int(result), location))
+				self.__printToLog(2, "Value {0} < {1} is {2}, storing {3} in Position: {4}".format(valueToCheck1, valueToCheck2, result, int(result), location))
 				self.currentIndex += 4
 			
 			elif instruction == 8:
@@ -200,7 +204,7 @@ class IntcodeComputer:
 				outputLoc = (locValue, mask[2])
 				result = (valueToCheck1 == valueToCheck2)
 				outputLocation = self.writeLocation(outputLoc, int(result))
-				self.__printToLog(2, "\tValue {0} == {1} is {2}, storing {3} in Position: {4}".format(valueToCheck1, valueToCheck2, result, int(result), outputLocation))
+				self.__printToLog(2, "Value {0} == {1} is {2}, storing {3} in Position: {4}".format(valueToCheck1, valueToCheck2, result, int(result), outputLocation))
 				self.currentIndex += 4	
 			
 			elif instruction == 9:
@@ -208,7 +212,7 @@ class IntcodeComputer:
 				outputLoc = (parms[0], mask[0])
 				baseUpdate, location = self.readFromLocation(outputLoc)
 				self.relativeBase += int(baseUpdate)
-				self.__printToLog(2, "\tUpdating RELATIVEBASE by {0} to {1}".format(baseUpdate, self.relativeBase))
+				self.__printToLog(2, "Updating RELATIVEBASE by {0} to {1}".format(baseUpdate, self.relativeBase))
 				self.currentIndex += 2
 			
 			else:
