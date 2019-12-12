@@ -17,6 +17,20 @@ def computeAngle(a, b):
 		cosine_angle = 0
 	angle = np.degrees(np.arccos(cosine_angle)) - 90.0
 	
+	if (np.sign(bx) != 1 and np.sign(by) == 1):
+		angle += 90
+	elif (np.sign(bx) != 1) and (np.sign(by) != 1):
+		angle += 180
+	elif (np.sing(bx) == 1) and (np.sign(by) != 1):
+		angle += 270
+	else:
+		pass
+
+	if (np.sign(bx) != 1 and ):
+		if (np.sign(by) != 1):
+			angle = angle + 90
+		angle = angle + 90
+
 	return angle
 	
 	

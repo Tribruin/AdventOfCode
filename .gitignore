@@ -2,3 +2,4 @@
 *.pyc
 __pycache__
 test*.*
+__pycache__/Intcode.cpython-38.pyc
