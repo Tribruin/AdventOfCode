@@ -114,7 +114,14 @@ class IntcodeComputer:
 		maskCode = mask[lenOfParms-1]
 		returnParms.append(int(parms[-1])) 			
 		return returnParms
-				
+
+	def receiveInput(self):
+		x = input()
+		return x
+
+	def printValue(self,value):
+		print(value)
+		return
 		
 	def getInstruction(self):
 		""" Get the next instruction code"""
@@ -148,7 +155,6 @@ class IntcodeComputer:
 				self.__printToLog(1, "Execute {0} + {1} with result: {2} and stored in Position: {3}".format(x,y, a, outputLocation))
 				self.currentIndex += 4
 
-			
 			elif instruction == 2:
 				parms = self.getParameters(3, mask)
 				x, y, outputLoc = parms
@@ -161,7 +167,7 @@ class IntcodeComputer:
 			elif instruction == 3:
 				parms = self.getParameters(1, mask)
 				outputLoc = (int(parms[0]), mask[0])
-				x = input()
+				x = self.receiveInput()
 				outputLocation = self.writeLocation(outputLoc,x)
 				
 				self.__printToLog(1, "Received Input {0} and stored in Position: {1}".format(x,outputLocation))
@@ -172,7 +178,7 @@ class IntcodeComputer:
 				outputLoc = (parms[0], mask[0])
 				location = parms[0]
 				x, inputLocation = self.readFromLocation(outputLoc)
-				print(x)
+				self.printValue(x)
 				self.__printToLog(1, "Printed value: {0} from Position: {1}".format(x, inputLocation))
 				self.currentIndex += 2
 
