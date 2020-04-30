@@ -11,128 +11,128 @@ log = False
 planetInput = "Day6-Input-Final.txt"
 
 def printToLog(out):
-	if log:
-		print(out)
-	return
-	
+    if log:
+        print(out)
+    return
+    
 
 class Planet:
 
-	def __init__(self, objectName, parentObject):
-		self.name = objectName
-		self.moons = []
-		self.parentObject = parentObject
-		try: 
-			self.parentName = parentObject.name
-		except:
-			self.parentName = "None"
-		self.planetData = self.planetData()
-		if self.parentObject != None:
-			parentObject.addOrbit(self)
-		return
-		
-	def numberOfParentPlanets(self):
-		parentOrbits = 0
-		if self.parentObject == None:
-			parentPlanets = 0
-		else:
-			parentPlanets = 1 + self.parentObject.numberOfParentPlanets()
-		return parentPlanets
-			
-	
-	def addOrbit(self, moon):
-		self.moons.append(moon)
-		return
-		
-	def numberOfChildOrbits(self):
-		printToLog("Checking orbits for Planet {0} with Number of moons: {1}".format(self.name, len(self.moons)))
-		orbits = 0
-		if len(self.moons) != 0:
-			for moon in self.moons:
-				orbits += moon.numberOfChildOrbits()
-			else:
-				orbits += self.numberOfParentPlanets()	
-		printToLog("Plant {0} has child orbits: {1}".format(self.name, orbits))
-		return orbits
-			
+    def __init__(self, objectName, parentObject):
+        self.name = objectName
+        self.moons = []
+        self.parentObject = parentObject
+        try: 
+            self.parentName = parentObject.name
+        except:
+            self.parentName = "None"
+        self.planetData = self.planetData()
+        if self.parentObject != None:
+            parentObject.addOrbit(self)
+        return
+        
+    def numberOfParentPlanets(self):
+        parentOrbits = 0
+        if self.parentObject == None:
+            parentPlanets = 0
+        else:
+            parentPlanets = 1 + self.parentObject.numberOfParentPlanets()
+        return parentPlanets
+            
+    
+    def addOrbit(self, moon):
+        self.moons.append(moon)
+        return
+        
+    def numberOfChildOrbits(self):
+        printToLog("Checking orbits for Planet {0} with Number of moons: {1}".format(self.name, len(self.moons)))
+        orbits = 0
+        if len(self.moons) != 0:
+            for moon in self.moons:
+                orbits += moon.numberOfChildOrbits()
+            else:
+                orbits += self.numberOfParentPlanets()	
+        printToLog("Plant {0} has child orbits: {1}".format(self.name, orbits))
+        return orbits
+            
 
-	def planetData(self):
-		return {'name' : self.name, 'parent' : self.parentName , 'moons' : list(map(lambda x : x.name, self.moons))}
-	
-	def __str__(self):
-		return str(self.name)
+    def planetData(self):
+        return {'name' : self.name, 'parent' : self.parentName , 'moons' : list(map(lambda x : x.name, self.moons))}
+    
+    def __str__(self):
+        return str(self.name)
 
 
 def getInputFromFile(filename):
 
-	returnInput  = []
-	
-	input = []
-	r = open(filename,"r")
-	for line in r:
-		x, y = line.rstrip().split(")")
-		input.append({'name' : y, 'parent' : x})
-		
+    returnInput  = []
+    
+    input = []
+    r = open(filename,"r")
+    for line in r:
+        x, y = line.rstrip().split(")")
+        input.append({'name' : y, 'parent' : x})
+        
 
-	# Now let's find the COM (Only Planet listed as a Parent, not a Child)
-	uniqueParents = set(list(map(itemgetter('parent'), input)))
-	uniquePlanets = set(list(map(itemgetter('name'), input)))
-	COMName = list(uniqueParents.difference(uniquePlanets))[0]
+    # Now let's find the COM (Only Planet listed as a Parent, not a Child)
+    uniqueParents = set(list(map(itemgetter('parent'), input)))
+    uniquePlanets = set(list(map(itemgetter('name'), input)))
+    COMName = list(uniqueParents.difference(uniquePlanets))[0]
 
-	return input, COMName
+    return input, COMName
 
 
 def getTotalOrbits(planetArray):
-	orbits = 0
-	for planet in planetArray:
-		orbits += planet.numberOfChildOrbits()
-	return orbits
-	
+    orbits = 0
+    for planet in planetArray:
+        orbits += planet.numberOfChildOrbits()
+    return orbits
+    
 
 def printPlanets(planetArray):
-	for planet in planetArray:
-		printToLog("Planet Name: {0:^3}\tParent Planet: {1} with # of Ancestors: {2}".format(planet.name, planet.parentName, planet.numberOfParentPlanets()))
-		for moon in planet.moons:
-			printToLog("\tMoon: {0}".format(str(moon)))
-	return
+    for planet in planetArray:
+        printToLog("Planet Name: {0:^3}\tParent Planet: {1} with # of Ancestors: {2}".format(planet.name, planet.parentName, planet.numberOfParentPlanets()))
+        for moon in planet.moons:
+            printToLog("\tMoon: {0}".format(str(moon)))
+    return
 
 def createPlanetsFromParent(planetInput, parentPlanet):	
-	printToLog("Entering Creating Planets from Parent Planet: {0}".format(parentPlanet))
-	returnInput = []
-	
-	# Now lets create a list with all the planets in an order from COM outward
-	childPlanets = list(filter(lambda x : x['parent'] == parentPlanet.name, planetInput))
-	if len(childPlanets) == 0:
-		return []
-	else:
-		for planet in childPlanets:
-			newPlanet = Planet(planet['name'], parentPlanet)
-			returnInput.append(newPlanet)
-			returnInput += createPlanetsFromParent(planetInput, newPlanet)
+    printToLog("Entering Creating Planets from Parent Planet: {0}".format(parentPlanet))
+    returnInput = []
+    
+    # Now lets create a list with all the planets in an order from COM outward
+    childPlanets = list(filter(lambda x : x['parent'] == parentPlanet.name, planetInput))
+    if len(childPlanets) == 0:
+        return []
+    else:
+        for planet in childPlanets:
+            newPlanet = Planet(planet['name'], parentPlanet)
+            returnInput.append(newPlanet)
+            returnInput += createPlanetsFromParent(planetInput, newPlanet)
 
-	return returnInput
-	
+    return returnInput
+    
 def totalNumberOfOrbits(planetArray):
-	orbits = 0
-	for planet in planetArray:
-		orbits += planet.numberOfParentPlanets()
-	return orbits
-	
+    orbits = 0
+    for planet in planetArray:
+        orbits += planet.numberOfParentPlanets()
+    return orbits
+    
 def main():
-	planets, COMName = getInputFromFile(planetInput)
-	
-	# Create the Center of Mass
-	planetArray = [Planet(COMName, None)]
-	planetArray += createPlanetsFromParent(planets, planetArray[0])
-	
-	
-	orbits = 0
-	printPlanets(planetArray)
-	print("Total number of orbits: {0}".format(totalNumberOfOrbits(planetArray)))
-		
-		
+    planets, COMName = getInputFromFile(planetInput)
+    
+    # Create the Center of Mass
+    planetArray = [Planet(COMName, None)]
+    planetArray += createPlanetsFromParent(planets, planetArray[0])
+    
+    
+    orbits = 0
+    printPlanets(planetArray)
+    print("Total number of orbits: {0}".format(totalNumberOfOrbits(planetArray)))
+        
+        
 
 if __name__ == "__main__":
-	main()
-	
-	
+    main()
+    
+    
