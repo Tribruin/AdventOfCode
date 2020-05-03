@@ -1,4 +1,4 @@
 {
 	"python.linting.enabled": true,
-	"python.pythonPath": "/Users/rblount/.pyenv/shims/python"
+	"python.pythonPath": "/Users/rblount/.pyenv/versions/AdOfCode/bin/python"
 }
