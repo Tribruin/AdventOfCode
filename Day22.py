@@ -3,11 +3,11 @@
 deckSize = 10007
 checkValue = 2019
 
-class Deck:
 
+class Deck:
     def __init__(self, sizeOfDeck):
         self.deck = list(range(sizeOfDeck))
-        return 
+        return
 
     # def size(self):
     #     return len(self.deck)
@@ -16,18 +16,21 @@ class Deck:
         print(self.deck)
 
     def reverseShuffle(self):
+        print("Reversing Deck")
         self.deck.reverse()
 
     def cutN(self, n):
+        print(f"Cutting Deck at {n}")
         if n > 0:
             x = n
         else:
             x = len(self.deck) + n
         tempCut = self.deck[0:x]
         tempCut2 = self.deck[x:]
-        self.deck=tempCut2 + tempCut
+        self.deck = tempCut2 + tempCut
 
     def incrementN(self, n):
+        print(f"Dealing with Increment {n}")
         newDeck = list(range(len(self.deck)))
         pos = 0
         for i in range(len(self.deck)):
@@ -41,7 +44,6 @@ class Deck:
         return self.deck.index(value)
 
 
-
 def main():
     deck = Deck(deckSize)
     r = open("Day22-Input.txt", "r")
@@ -52,14 +54,11 @@ def main():
         elif line[0:9] == "deal into":
             deck.reverseShuffle()
         else:
-            n = int(line[20])        
+            n = int(line[20:])
             deck.incrementN(n)
-    deck.printDeck()
+    # deck.printDeck()
     print(deck.findValue(checkValue))
+
 
 if __name__ == "__main__":
     main()
-
-
-
-

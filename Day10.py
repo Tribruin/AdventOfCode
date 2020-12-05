@@ -4,6 +4,7 @@ import math
 rows = 0
 columns = 0
 
+
 def angleToAsteroid(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
@@ -19,11 +20,12 @@ def angleToAsteroid(p1, p2):
     if angle < 0:
         angle += 360
     return round(angle, 3)
-    
+
+
 class AsteroidField():
 
     def __init__(self, inputFile):
-        
+
         f = open(inputFile)
         lines = f.readlines()
         self.columns = len(lines[0])-1
@@ -34,8 +36,7 @@ class AsteroidField():
                 if lines[y][x] == "#":
                     self.asteriodField[y][x] = True
 
-        return 
-
+        return
 
     def checkViews(self, x0, y0):
         # print(f"Checking for views at {x0}, {y0}")
@@ -74,31 +75,38 @@ class AsteroidField():
                                     if viewAngle == viewAngle2:
                                         # print(f"**BLOCKED**")
                                         blockView = True
-                                        break 
+                                        break
                                 else:
                                     pass
                                     # print(f"  No Asteroid found at {x2,y2}")
                     if not blockView:
                         views += 1
-                            
+
         return views
+
+
+def findBestLocation(AF):
+    bestViewableObjects = 0
+    bestAsteroid = (0, 0)
+
+    for y in range(AF.rows):
+        for x in range(AF.columns):
+            if AF.asteriodField[y][x]:
+                viewableObjects = AF.checkViews(x, y)
+                print(f"***Found: {viewableObjects} from {x,y}")
+                if viewableObjects > bestViewableObjects:
+                    bestViewableObjects = viewableObjects
+                    bestAsteroid = (x, y)
+
+    return bestAsteroid, bestViewableObjects
 
 
 def main():
 
-    bestViewableObjects = 0
-    bestAsteroid = (0, 0)
     A = AsteroidField("/Users/rblount/Scripts/AdventOfCode/Day10-Input.txt")
-    for y in range(A.rows):
-        for x in range(A.columns):
-            if A.asteriodField[y][x]:
-                viewableObjects = A.checkViews(x,y)
-                print(f"***Found: {viewableObjects} from {x,y}")
-                if viewableObjects > bestViewableObjects:
-                    bestViewableObjects = viewableObjects
-                    bestAsteroid = (x,y)
-
+    bestAsteroid, bestViewableObjects = findBestLocation(A)
     print(f"Found the best Asteroid at {bestAsteroid} with {bestViewableObjects} viewable objects")
+
 
 if __name__ == "__main__":
     main()
