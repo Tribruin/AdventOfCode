@@ -13,7 +13,7 @@ def angleToAsteroid(p1, p2):
             return 90
         else:
             return 270
-    s1 = (y2-y1)/(x2-x1)                                                 # Slope of a horizontal line
+    s1 = (y2 - y1) / (x2 - x1)  # Slope of a horizontal line
     angle = math.degrees(math.atan(s1))
     if x2 < x1:
         angle -= 180
@@ -22,13 +22,12 @@ def angleToAsteroid(p1, p2):
     return round(angle, 3)
 
 
-class AsteroidField():
-
+class AsteroidField:
     def __init__(self, inputFile):
 
         f = open(inputFile)
         lines = f.readlines()
-        self.columns = len(lines[0])-1
+        self.columns = len(lines[0]) - 1
         self.rows = len(lines)
         self.asteriodField = np.zeros((self.rows, self.columns), dtype=bool)
         for y in range(self.rows):
@@ -48,22 +47,22 @@ class AsteroidField():
                 if self.asteriodField[y1][x1] and not (x0 == x1 and y0 == y1):
                     viewAngle = angleToAsteroid((x0, y0), (x1, y1))
                     # print(f"From {x0,y0} to {x1,y1} is Angle: {viewAngle}")
-                    if (x0 > x1):
+                    if x0 > x1:
                         x2start, x2finish, xStep = x0, x1, -1
-                    elif (x0 == x1):
+                    elif x0 == x1:
                         x2start, x2finish, xStep = x0, x1, 1
                     else:
                         x2start, x2finish, xStep = x0, x1, 1
-                    if (y0 > y1):
+                    if y0 > y1:
                         y2start, y2finish, yStep = y0, y1, -1
-                    elif (y0 == y1):
+                    elif y0 == y1:
                         y2start, y2finish, yStep = y0, y1, 1
                     else:
                         y2start, y2finish, yStep = y0, y1, 1
                     # print(f"  Checking for Asteroids from {x2start,y2start} to {x2finish,y2finish} with steps {xStep, yStep}")
                     blockView = False
-                    for y2 in range(y2start, y2finish+yStep, yStep):
-                        for x2 in range(x2start, x2finish+xStep, xStep):
+                    for y2 in range(y2start, y2finish + yStep, yStep):
+                        for x2 in range(x2start, x2finish + xStep, xStep):
                             if (x2 == x0 and y2 == y0) or (x2 == x1 and y2 == y1):
                                 pass
                             else:
@@ -103,9 +102,11 @@ def findBestLocation(AF):
 
 def main():
 
-    A = AsteroidField("/Users/rblount/Scripts/AdventOfCode/Day10-Input.txt")
+    A = AsteroidField("Day10-Input.txt")
     bestAsteroid, bestViewableObjects = findBestLocation(A)
-    print(f"Found the best Asteroid at {bestAsteroid} with {bestViewableObjects} viewable objects")
+    print(
+        f"Found the best Asteroid at {bestAsteroid} with {bestViewableObjects} viewable objects"
+    )
 
 
 if __name__ == "__main__":
