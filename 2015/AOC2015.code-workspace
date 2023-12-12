@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.pythonPath": "/Users/rblount/.pyenv/versions/AdOfCode/bin/python"
+	}
+}

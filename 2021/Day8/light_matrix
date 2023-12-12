@@ -1,0 +1,33 @@
+
+
+7 = a   c     f
+1 =     c     f
+4 =   b c d   f                         * 
+8 = a b c d e f g                       a b c d e f g
+
+0 = a b c   e f g 
+3 = a   c d   f g
+2 = a   c d e   g
+9 = a b c d   f g 
+6 = a b   d e f g
+5 = a b   d   f g
+
+
+a = 7 not in 1                  
+
+cf = in 7 and 1 
+eg = 8 not in (7 or 4)
+0 contain cefg
+b = 0 - cefg - a
+
+2, 3 does not have b
+3 has cf 
+2 does not cf
+
+9 only cf left
+
+6 = len(6)
+5 = len(5)
+
+b, ce, fg
+
