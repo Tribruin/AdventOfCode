@@ -45,22 +45,11 @@ def part2(dataInput):
         elif lens[1] == "-" and label in box.keys():
             boxes[boxNum].pop(label)
 
-        # print(f"After: {label}{lens[1]}{lens[2]}")
-        # for i in range(256):
-        #     if len(boxes[i]) != 0:
-        #         print(f"Box {i}: ", end="")
-        #         for label, data in boxes[i].items():
-        #             print(f"[{label} {data}] ", end="")
-        #         print()
-        # print()
-
     totalPower = 0
     for x, box in boxes.items():
         boxTotal = 0
-        pos = 1
-        for focalLength in box.values():
-            boxTotal += (x + 1) * pos * int(focalLength)
-            pos += 1
+        for pos, focalLength in enumerate(box.values()):
+            boxTotal += (x + 1) * (pos + 1) * int(focalLength)
         totalPower += boxTotal
     print(totalPower)
 
