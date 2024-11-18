@@ -142,6 +142,14 @@ def getDateYear() -> tuple:
     return (codeDate, codeYear)
 
 
+def findLenXLenY(locs: list) -> (tuple, tuple):
+    minx = min([x[0] for x in locs])
+    miny = min([x[1] for x in locs])
+    maxx = max([x[0] for x in locs])
+    maxy = max([x[1] for x in locs])
+    return (minx, miny), (maxx, maxy)
+
+
 def main():
     day = datetime.now().day
     if day > 25:
