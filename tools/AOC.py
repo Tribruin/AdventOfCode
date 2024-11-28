@@ -107,7 +107,7 @@ class AOC:
 
 
 def addTuples(a: tuple, b: tuple) -> tuple:
-    """Add two tuples togeter. Tuples must be the same length"""
+    """Add two tuples together. Tuples must be the same length"""
 
     if len(a) != len(b):
         raise TypeError("Tuple lenghts must be the same")
@@ -117,7 +117,7 @@ def addTuples(a: tuple, b: tuple) -> tuple:
 
 
 def subtractTuples(a: tuple, b: tuple) -> tuple:
-    """Add two tuples togeter. Tuples must be the same length"""
+    """Subtract two tuples. Tuples must be the same length"""
 
     if len(a) != len(b):
         raise TypeError("Tuple lenghts must be the same")
