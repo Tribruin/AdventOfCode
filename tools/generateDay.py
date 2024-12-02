@@ -18,7 +18,7 @@ from TerminalColors import RED, ENDCOLOR
 # Session Key is stored at Secrets/AOC2022SessionID
 PasswordUUID = "oatihiwgu2syxukn2nacg3b3m4"
 response = subprocess.run(
-    ["op", "items", "get", PasswordUUID, "--fields", "SessionID"],
+    ["op", "items", "get", PasswordUUID, "--fields", "SessionID", "--reveal"],
     stdout=subprocess.PIPE,
     check=True,
     text=True,
