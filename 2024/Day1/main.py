@@ -1,4 +1,5 @@
 from AOC import AOC, getDateYear
+from os import path
 from TerminalColors import *
 
 testing = False
@@ -6,8 +7,9 @@ testing = False
 
 def parse_input(codeInput: AOC):
     lines = codeInput.find_all_ints_in_lines()
-    list1 = [x[0] for x in lines]
-    list2 = [x[1] for x in lines]
+    # list1 = [x[0] for x in lines]
+    # list2 = [x[1] for x in lines]
+    list1, list2 = map(list, zip(*lines))
 
     return (list1, list2)
 
@@ -17,8 +19,8 @@ def part1(dataInput):
     list1 = sorted(list1)
     list2 = sorted(list2)
     total = 0
-    for x in range(len(list1)):
-        total += abs(list2[x] - list1[x])
+    for i, _ in enumerate(list1):
+        total += abs(list2[i] - list1[i])
     print(total)
 
 

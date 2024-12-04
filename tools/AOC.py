@@ -23,14 +23,15 @@ class AOC:
         self.day = int(day)
         self.year = int(year)
         self.test_file = test
-        self.script_path = path.dirname(sys.argv[0])
+        self.absCodePath = path.abspath(path.dirname(sys.argv[0]))
+
         if self.test_file:
-            self.input_file = f"{self.script_path}/Day{self.day}-Input-Test.txt"
+            self.input_file = f"{self.absCodePath}/Day{self.day}-Input-Test.txt"
             print("Using test data from existing input file")
             if not path.exists(self.input_file):
                 raise FileNotFoundError("Test Input File does not exist")
         else:
-            self.input_file = f"{self.script_path}/Day{self.day}-Input.txt"
+            self.input_file = f"{self.absCodePath}/Day{self.day}-Input.txt"
             # self._pull_input_data_from_aoc()
         self.file = self._read_file()
         self.lines = self._read_file_as_lines()
@@ -56,23 +57,32 @@ class AOC:
     #         with open(self.input_file, "w") as f:
     #             f.write(txt)
 
-    def read_int(self):
-        array = [int(x) for x in self.lines]
-        return array
-
     def read_file(self):
+        """Read the file and return the whole file"""
         return self.file
 
+    def read_lines(self):
+        """Read the file in to lines
+        stripping any whitespace characters"""
+        array = [x.strip() for x in self.lines]
+        return array
+
     def read_lines_no_strip(self):
+        """Read the file in to lines without
+        stripping any characters"""
         array = [x for x in self.lines]
         return array
 
-    def read_int_in_line(self):
-        array = [int(x) for x in self.lines[0].split(",")]
+    def read_int(self):
+        """Read the file and return a list of integers
+        Use for input with single intergers per line"""
+        array = [int(x) for x in self.lines]
         return array
 
-    def read_lines(self):
-        array = [x.strip() for x in self.lines]
+    def read_int_in_line(self, delimeter=","):
+        """Read the file and split line by"""
+
+        array = [int(x) for x in self.lines[0].split(",")]
         return array
 
     def split_line(self, delimiter=","):
@@ -143,6 +153,9 @@ def getDateYear() -> tuple:
 
 
 def findLenXLenY(locs: list) -> (tuple, tuple):
+    """Provide a list of x,y coordinates as list of Tuples
+    e.g. [(0,0), (1,1), (0,1), etc]
+    Return the min (x,y) coordinate and the max (x,y) coordinate"""
     minx = min([x[0] for x in locs])
     miny = min([x[1] for x in locs])
     maxx = max([x[0] for x in locs])

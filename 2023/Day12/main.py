@@ -35,7 +35,7 @@ def findAllCombos(springLine, springCount):
     totalCount = 0
     while not allFound:
         subLine = springLine[i : i + springCount]
-        missingPos = [x.start() for x in re.finditer("\?", subLine)]
+        missingPos = [x.start() for x in re.finditer(r"\?", subLine)]
         possibleSubs = combinations(missingPos, springCount)
         for possibleSub in possibleSubs:
             subCount = 0
@@ -82,7 +82,7 @@ def part2(dataInput):
     totalCount = 0
     for num, (line, counts) in enumerate(springLines):
         totalToReplace = sum(counts) - sum(countSprings(line))
-        missingPos = [x.start() for x in re.finditer("\?", line)]
+        missingPos = [x.start() for x in re.finditer(r"\?", line)]
         possibleSubs = combinations(missingPos, totalToReplace)
         print(f"Line #{num} - Perms {len(list(possibleSubs))}")
         for possibleSub in possibleSubs:
