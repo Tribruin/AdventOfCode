@@ -99,31 +99,24 @@ def part1(dataInput):
 
 
 def part2(dataInput):
-    patterns = [("M", "M"), ("S", "M"), ("M", "S"), ("S", "S")]
-    match_patterns = [("S", "S"), ("S", "M"), ("M", "S"), ("M", "M")]
 
-    def check_square(line1, line3) -> bool:
-        for i, line in enumerate(patterns):
-            if line1 == line and line3 == match_patterns[i]:
-                return True
-        return False
-
-        pass
+    match_strings = ["MMSS", "SMSM", "MSMS", "SSMM"]
+    positions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
 
     lines = dataInput
-    x_len, y_len = len(lines[0]), len(lines)
     x_min = y_min = 1
-    x_max, y_max = x_len - 1, y_len - 1
+    x_max, y_max = len(lines[0]) - 1, len(lines) - 1
 
     total_xmases = 0
     for y in range(y_min, y_max):
         for x in range(x_min, x_max):
             # Check to see if we are starting on a "A"
             if lines[y][x] == "A":
-                line1 = (lines[y - 1][x - 1], lines[y - 1][x + 1])
-                line3 = (lines[y + 1][x - 1], lines[y + 1][x + 1])
-                if check_square(line1, line3):
-                    total_xmases += 1
+                line = ""
+                for x_offset, y_offset in positions:
+                    line += lines[y + y_offset][x + x_offset]
+                    if line in match_strings:
+                        total_xmases += 1
 
     print(total_xmases)
 
@@ -136,7 +129,7 @@ def main():
     codeInput = AOC(codeDate, codeYear, test=testing)
     dataInput = parse_input(codeInput)
 
-    # part1(dataInput)
+    part1(dataInput)
     part2(dataInput)
 
 
