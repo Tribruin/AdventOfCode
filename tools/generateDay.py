@@ -1,5 +1,20 @@
 #!/Users/rblount/.pyenv/versions/AdOfCode/bin/python
 
+# Generate a New Day for Advent of Code
+# Script does the following
+# Determines the current date based in Eastern Time Zones
+# Checks if an existing folder structure exists
+# If not:
+#   * Copy the template main.py to the Day folder
+#   * Create the DayXX-Input-Test.txt file to save the test case(s)
+#   * Downoad the puzzle input from AOC website (compliance with AOC rules)
+#   * Save puzzle input to DayXX-Input.txt
+#
+#  CLI Arguments
+#   --year = Year to retrieve (default current year)
+#   --day = Day to retrieve (default current day)
+
+
 from datetime import datetime
 from shutil import copy
 import os
@@ -16,6 +31,9 @@ from TerminalColors import RED, ENDCOLOR
 
 # Pulls the Session ID from One Password via the OP CLI
 # Session Key is stored at Secrets/AOC2022SessionID
+# Login in to Advent of Code and get the SessionID cookie. Cookies last one month,
+# so will need to reset every year
+
 PasswordUUID = "oatihiwgu2syxukn2nacg3b3m4"
 response = subprocess.run(
     ["op", "items", "get", PasswordUUID, "--fields", "SessionID", "--reveal"],
@@ -29,9 +47,6 @@ SESSION_ID = str(response.stdout).strip()
 currentPath = os.path.abspath(os.path.dirname(sys.argv[0]))
 parentPath = os.path.dirname(currentPath)
 
-
-# currentYear = date.today().year
-# currentDay = date.today().day
 currentYear = datetime.now(pytz.timezone("America/New_York")).year
 currentDay = datetime.now(pytz.timezone("America/New_York")).day
 

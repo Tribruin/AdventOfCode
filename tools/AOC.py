@@ -5,19 +5,6 @@ import re
 from os import path
 from datetime import datetime
 from TerminalColors import RED, ENDCOLOR
-
-# Login in to Advent of Code and get the session cookie. Cookies last one month,
-# so will need to reset every year
-# Update .env file with new SessionID
-# response = subprocess.run(
-#     ["op", "items", "get", "AOCSessionID", "--fields", "SessionID"],
-#     stdout=subprocess.PIPE,
-#     check=True,
-#     text=True
-# )
-# SESSION_ID = str(response.stdout).strip()
-
-
 class AOC:
     def __init__(self, day, year, test=True):
         self.day = int(day)
@@ -45,17 +32,6 @@ class AOC:
         with open(self.input_file, "r") as f:
             file = f.read()
         return file
-
-    # def _pull_input_data_from_aoc(self):
-    #     if not path.exists(self.input_file):
-    #         print(f"Pulling Input from AOC Website for Day: {self.day}")
-    #         aoc_input_url = f"https://adventofcode.com/{self.year}/day/{self.day}/input"
-    #         cookies = dict(session=SESSION_ID)
-    #         response = requests.get(url=aoc_input_url, cookies=cookies)
-
-    #         txt = response.text
-    #         with open(self.input_file, "w") as f:
-    #             f.write(txt)
 
     def read_file(self):
         """Read the file and return the whole file"""
