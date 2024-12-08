@@ -5,6 +5,8 @@ import re
 from os import path
 from datetime import datetime
 from TerminalColors import RED, ENDCOLOR
+
+
 class AOC:
     def __init__(self, day, year, test=True):
         self.day = int(day)
@@ -112,9 +114,26 @@ def subtractTuples(a: tuple, b: tuple) -> tuple:
     return tuple(temp)
 
 
+def multiplyTuple(tup, multiplier):
+    return tuple(x * multiplier for x in tup)
+
+
 def manhattan_dist(a: tuple, b: tuple) -> int:
     dist = abs(a[0] - b[0]) + abs(a[1] - b[1])
     return dist
+
+
+def insideGrid(pos, max, min=(0, 0)) -> bool:
+    y, x = pos
+    min_y, min_x = min
+    max_y, max_x = max
+    return min_y <= y < max_y and min_x <= x < max_x
+
+
+def getMaxYMaxX(matrix: list) -> (int, int):
+    """Get the maximum y and maximum x values of a 2x2 matrix"""
+    y_max, x_max = len(matrix), len(matrix[0])
+    return (y_max, x_max)
 
 
 def getDateYear() -> tuple:

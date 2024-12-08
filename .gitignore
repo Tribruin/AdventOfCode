@@ -130,7 +130,7 @@ dmypy.json
 
 # Exclude Inputs from Repository
 *-Input.txt
-*-Input-Test.txt
+*-Input-Test*.txt
 
 .vscode/settings.json
 .env
