@@ -67,8 +67,8 @@ def part2(dataInput):
         test_cases = len(numbers) - 1
         print(f"Checking {3 ** test_cases} - ", end="")
         test_signs = list(product(operators_list_2, repeat=test_cases))
-        test_signs_sorted = sorted(test_signs)
-        valid, operations = test_calcs(total, numbers, test_signs_sorted)
+        # test_signs_sorted = sorted(test_signs)
+        valid, operations = test_calcs(total, numbers, test_signs)
         if valid:
             print(f"{BGREEN}{total} = ", end="")
             for idx, number in enumerate(numbers[:-1]):
