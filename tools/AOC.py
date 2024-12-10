@@ -8,7 +8,21 @@ from TerminalColors import RED, ENDCOLOR
 
 
 class AOC:
+    """
+    Class for initializing an AOC day
+    """
+
     def __init__(self, day, year, test=True):
+        """Initialize the AOC clase
+
+        Args:
+            day (int): Day to run
+            year (int): Year to run
+            test (bool, optional): Whether to run with Test input or Actual Input. Defaults to True.
+
+        Raises:
+            FileNotFoundError: If the Input file does not exist.
+        """
         self.day = int(day)
         self.year = int(year)
         self.test_file = test
@@ -16,44 +30,73 @@ class AOC:
 
         if self.test_file:
             self.input_file = f"{self.absCodePath}/Day{self.day}-Input-Test.txt"
-            print("Using test data from existing input file")
+            print("Using test data input file")
             if not path.exists(self.input_file):
                 raise FileNotFoundError("Test Input File does not exist")
         else:
             self.input_file = f"{self.absCodePath}/Day{self.day}-Input.txt"
-            # self._pull_input_data_from_aoc()
+            print("Using actual data input file.")
+            if not path.exists(self.input_file):
+                raise FileNotFoundError("Input File does not exist")
+
+        # Read teh data a single file and a list of lines
         self.file = self._read_file()
         self.lines = self._read_file_as_lines()
 
-    def _read_file_as_lines(self):
+    def _read_file_as_lines(self) -> list:
+        """Read the input file as list string. One per line.
+
+        Returns:
+            list: list of strints
+        """
         with open(self.input_file, "r") as f:
             lines = f.read().splitlines()
         return lines
 
-    def _read_file(self):
+    def _read_file(self) -> str:
+        """Return a single string with contents of the input file
+
+        Returns:
+            str: Input file as a stirng
+        """
         with open(self.input_file, "r") as f:
             file = f.read()
         return file
 
-    def read_file(self):
-        """Read the file and return the whole file"""
+    def read_file(self) -> str:
+        """Return the full input as single sting
+
+        Returns:
+            str: Input file as a stirng
+        """
         return self.file
 
-    def read_lines(self):
-        """Read the file in to lines
-        stripping any whitespace characters"""
+    def read_lines(self) -> list:
+        """Return the input file as a list of strings.
+        Strip any non printable characters before returning.
+
+        Returns:
+            list: Input file as a list with each line a string
+        """
         array = [x.strip() for x in self.lines]
         return array
 
-    def read_lines_no_strip(self):
-        """Read the file in to lines without
-        stripping any characters"""
+    def read_lines_no_strip(self) -> list:
+        """Return the input file as a list of strings.
+        Do not strip any characters.
+
+        Returns:
+            list: Input file as a list with each line a string
+        """
         array = [x for x in self.lines]
         return array
 
-    def read_int(self):
-        """Read the file and return a list of integers
-        Use for input with single intergers per line"""
+    def read_int(self) -> list:
+        """Returns list a integers. Works with input that is a single of integers
+
+        Returns:
+            list: list of integers
+        """
         array = [int(x) for x in self.lines]
         return array
 
@@ -75,27 +118,68 @@ class AOC:
             line_array.append(array)
         return line_array
 
-    def split_line_re(self, regex=","):
+    def split_line_re(self, regex=",") -> list:
+        """Split all lines in the input using a regular expression
+
+        Args:
+            regex (str, optional): Regular Expression to use as seperator. Defaults to ",".
+
+        Returns:
+            list: List of list of Strings
+        """
         array = [re.split(regex, x) for x in self.read_lines()]
         return array
 
-    def split_line_re_int(self, regex=","):
+    def split_line_re_int(self, regex=",") -> list:
+        """Split all lines in the input using a regular expression and return them as integers
+
+        Args:
+            regex (str, optional): Regular Expression to use as seperator. Defaults to ",".
+
+        Returns:
+            list: List of list of Integers
+        """
         array = self.split_line_re(regex)
         array = [list(map(int, x)) for x in array]
         return array
 
-    def find_all_in_lines(self, regex="-?\d+"):
+    def find_all_in_lines(self, regex=r"-?\d+") -> list:
+        """Split all lines in the input file using a Regular Expression
+
+        Args:
+            regex (str, optional): The Regular Expression. Defaults to r"-?\d+" with finds all integers
+
+        Returns:
+            list: List of lists of strings
+        """
         array = [re.findall(regex, x) for x in self.read_lines()]
         return array
 
-    def find_all_ints_in_lines(self):
+    def find_all_ints_in_lines(self) -> list:
+        """Find all the integers in the Input File by line.
+
+        Returns:
+            list: List of list of integers
+        """
         array = self.find_all_in_lines()
         array = [[int(x) for x in y] for y in array]
         return array
 
 
 def addTuples(a: tuple, b: tuple) -> tuple:
-    """Add two tuples together. Tuples must be the same length"""
+    """Add two tuples together:
+    e.g. (a,b) + (c,d) = (a+c, b+d)
+
+    Args:
+        a (tuple): Tuple 1
+        b (tuple): Tuple 2
+
+    Raises:
+        TypeError: Tuples are not the same length
+
+    Returns:
+        tuple: Sum of the two tuples
+    """
 
     if len(a) != len(b):
         raise TypeError("Tuple lenghts must be the same")
@@ -105,7 +189,19 @@ def addTuples(a: tuple, b: tuple) -> tuple:
 
 
 def subtractTuples(a: tuple, b: tuple) -> tuple:
-    """Subtract two tuples. Tuples must be the same length"""
+    """Subtract two tuples
+    e.g. (a,b) - (c-d) = (a-c, b-d)
+
+    Args:
+        a (tuple): Tuple 1
+        b (tuple): Tuple 2
+
+    Raises:
+        TypeError: Tuples are not the same length
+
+    Returns:
+        tuple: Difference between the two tuples.
+    """
 
     if len(a) != len(b):
         raise TypeError("Tuple lenghts must be the same")
@@ -114,16 +210,45 @@ def subtractTuples(a: tuple, b: tuple) -> tuple:
     return tuple(temp)
 
 
-def multiplyTuple(tup, multiplier):
+def multiplyTuple(tup: tuple, multiplier: int) -> tuple:
+    """Multiple a tuple by a mulitplier
+
+    Args:
+        tup (tuple): Tuple to apply the multiplier
+        multiplier (int): Multiplier
+
+    Returns:
+        tuple: Resulting tuple
+    """
     return tuple(x * multiplier for x in tup)
 
 
 def manhattan_dist(a: tuple, b: tuple) -> int:
+    """Get the manhattan distance between two points in a x,y coordinate system
+        manhattan distance = | x1 - x2 | + | y1 - y2 |
+
+    Args:
+        a (tuple): Point 1 (x1, y1)
+        b (tuple): Point 2 (x2, y2)
+
+    Returns:
+        int: Total manhattan distance
+    """
     dist = abs(a[0] - b[0]) + abs(a[1] - b[1])
     return dist
 
 
 def insideGrid(pos, max, min=(0, 0)) -> bool:
+    """Determine if a pos (x,y) is inside a grid
+
+    Args:
+        pos (tuple): Position to check (x,y)
+        max (tuple): Maximum x and y values of the grid.
+        min (tuple, optional): Minimum x and y values of the grid. Defaults to (0, 0).
+
+    Returns:
+        bool: True if pos is inside the Grid, else False
+    """
     y, x = pos
     min_y, min_x = min
     max_y, max_x = max
