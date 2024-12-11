@@ -283,6 +283,20 @@ def findLenXLenY(locs: list) -> (tuple, tuple):
     return (minx, miny), (maxx, maxy)
 
 
+def increaseCountOfDict(dictionary: dict, key: any, count: int):
+    """Increase the value of specified dictionary key by count. If the
+        key does not exist, it will be created and the inital value will
+        be set as count
+
+    Args:
+        dictionary (dict): dictionary to update
+        key (any): key in the dictionary to update
+        count (int): amount to increase the count
+    """
+    new_value = dictionary.get(key, 0) + count
+    dictionary.update({key: new_value})
+
+
 def main():
     day = datetime.now().day
     if day > 25:
