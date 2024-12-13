@@ -1,0 +1,19 @@
+
+ 
+123 
+4X5
+678
+                                            O = Occupied
+                                            X = Empty
+                                            . = Unchecked
+
+                                            12345678
+OTL - Occupied: None - Empty: 1,2,4         XX.X....
+OTR - Occupied: None - Empty: 2,3,5         .XX.X...
+OBL - Occupied: None - Empty: 4,6,7         ...X.XX.
+OBR - Occupied: None - Empty: 5,7,8         ....X.XX
+
+ITL - Occupied: 5,7 - Empty: 8              ....O.OX
+ITR - Occupied: 4,7 - Empty: 6              ...O.XO.
+IBL - Occupied: 2,5 - Empty: 3              .OX.O...
+IBR - Occupied: 2,4 - Empty: 1              XO.O....

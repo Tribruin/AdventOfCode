@@ -92,6 +92,7 @@ def part2(dataInput):
         rock_line = process_blink(new_line)
         count = sum(rock_line.values())
     print(f"Final: {count}")
+    print(f"Unique Numbers: {len(rock_line)}")
 
 
 def main():
