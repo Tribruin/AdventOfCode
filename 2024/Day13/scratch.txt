@@ -1,0 +1,9 @@
+m*A + n*B = X
+m*A = (X - n*B)
+m = (X - n*B) // A
+m = X/A - (n*B/A)
+
+m + n < 101
+
+(
+
