@@ -1,7 +1,8 @@
 from AOC import AOC, getDateYear, addTuples
 from TerminalColors import *
+from time import sleep
 
-testing = True
+testing = False
 if testing:
     x_max, y_max = 11, 7
 else:
@@ -10,12 +11,14 @@ else:
 
 def print_grid(robots):
     robot_pos = [x["pos"] for x in robots]
+    print(f"{CLEAR}")
     for y in range(y_max):
         for x in range(x_max):
             if robot_pos.count((x, y)) == 0:
-                print(".", end="")
+                print(" ", end="")
             else:
-                print(robot_pos.count((x, y)), end="")
+                # print(robot_pos.count((x, y)), end="")
+                print("X", end="")
         print()
     print()
 
@@ -37,7 +40,7 @@ def make_move(robot):
     return (new_x, new_y)
 
 
-def get_quads(robots) -> list():
+def get_quads(robots) -> list:
     x_mid = x_max // 2
     y_mid = y_max // 2
 
@@ -54,28 +57,36 @@ def get_quads(robots) -> list():
     return quad_contents
 
 
-def check_for_tree(robots):
-    robots_pos = [i["pos"] for i in robots]
-    lines = list()
-    for y_check in range(y_max):
-        line = [(x, y) for (x, y) in robots_pos if y == y_check]
-        line = sorted(list(set(line)))
-        lines.append(line)
+def check_for_tree(robots, idx):
 
-    x_mid = x_max // 2
-    is_a_tree = True
+    # This is a little bit of a cheat since I don't know how
+    # the Christmas tree is shaped. So, I used a hint from Reddit
+    # that the frame would likely not have any overlapping robots
+    # If I get interested, I will resolve by looking for a shape.
 
-    for line in lines:
-        line_x = sorted([i[0] for i in line])
+    robots_all_pos = [i["pos"] for i in robots]
+    robot_pos = sorted(list(set(robots_all_pos)))
+    if len(robot_pos) == len(robots_all_pos):
+        print_grid(robots)
+        print(f"Seconds Elapsed: {idx}")
+        sleep(1.0)
 
-        # check if mid_point in line, if not, not a tree
+    # for y in range(0, y_max):
+    #     for x in range(0, x_max + 1):
+    #         if (x, y) not in robot_pos:
+    #             # No robots, continue to check positions
+    #             continue
+
+    #             # Ok, now let's check if the the locations on top and immediate side are clear
+    #             # As this is top of the tree
+    #             # for neighbor in [(-1,-1), (0,-1), (1,0), [-1,0], [1,0]]
 
 
 def part1(dataInput):
     moves = 100
     robots = dataInput
 
-    for _ in range(moves):
+    for idx in range(moves):
         for robot in robots:
             robot["pos"] = make_move(robot)
 
@@ -84,17 +95,22 @@ def part1(dataInput):
     for quad in results.values():
         safety_value *= len(quad)
     print(safety_value)
-    # print_grid(robots)
+    print_grid(robots)
+    print(f"Seconds Elapsed: {idx}")
 
 
 def part2(dataInput):
+    idx = 1
     robots = dataInput
-    idx = 0
-    while True:
-        print_grid(robots)
-        check_for_tree(robots)
+
+    while idx < 10000:
         for robot in robots:
             robot["pos"] = make_move(robot)
+        check_for_tree(robots, idx)
+        # print_grid(robots)
+        # print(f"Seconds Elapsed: {idx}")
+        # sleep(0.05)
+        idx += 1
 
 
 def main():
