@@ -5,6 +5,14 @@ import re
 from os import path
 from datetime import datetime
 from TerminalColors import RED, ENDCOLOR
+from collections import OrderedDict
+
+# Move offsets assuming a (y,x) coordinate system.
+moveOffets = OrderedDict()
+moveOffets["^"] = (-1, 0)
+moveOffets[">"] = (0, 1)
+moveOffets["v"] = (1, 0)
+moveOffets["<"] = (0, -1)
 
 
 class AOC:
