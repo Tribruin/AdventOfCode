@@ -96,38 +96,46 @@ def get_measurements_part1(plant):
 
 def get_measurements_part2(plant):
 
-    def check_for_corner(pos, neighbors):
-        corners_found = ""
-        corner_count = 0
-        for corner_name, corner_pattern in all_corners.items():
-            valid_corner = True
-            for check_corner, req_value in zip(part2_moves, corner_pattern):
-                in_neighbors = check_corner in neighbors
-                if req_value == None:
-                    continue
-                elif in_neighbors == req_value:
-                    continue
-                # elif req_value and in_neighbors:
-                #     continue
-                # elif not (req_value and in_neighbors):
-                #     continue
-                else:
-                    valid_corner = False
-                    break
-            if valid_corner:
-                corners_found += f"{corner_name},"
-                corner_count += 1
-        print(pos, corners_found)
-        return corner_count
+    # def check_for_corner(position, neighbors):
+    #     corners_found = ""
+    #     corner_count = 0
+    #     for corner_name, corner_pattern in all_corners.items():
+    #         valid_corner = True
+    #         for check_corner, req_value in zip(part2_moves, corner_pattern):
+    #             in_neighbors = check_corner in neighbors
+    #             if req_value == None:
+    #                 continue
+    #             elif in_neighbors == req_value:
+    #                 continue
+    #             # elif req_value and in_neighbors:
+    #             #     continue
+    #             # elif not (req_value and in_neighbors):
+    #             #     continue
+    #             else:
+    #                 valid_corner = False
+    #                 break
+    #         if valid_corner:
+    #             corners_found += f"{corner_name},"
+    #             corner_count += 1
+    #     print(position, corners_found)
+    #     return corner_count
 
-    poses = sorted(plant["plot"])
-    area = len(poses)
+    positions = sorted(plant["plot"])
+    area = len(positions)
     perimeter = 0
 
-    for pos in poses:
-        all_neighbors = get_neighbors_part2(pos, poses)
-        corners = check_for_corner(pos, all_neighbors)
-        perimeter += corners
+    # for position in positions:
+    #     all_neighbors = get_neighbors_part2(position, positions)
+    #     corners = check_for_corner(position, all_neighbors)
+    #     perimeter += corners
+
+    for y in range(-1, y_max + 1):
+        for x in range(-1, x_max + 1):
+            if (y, x) in positions:
+                continue
+            else:
+                corners = get_neighbors_part1((y, x), positions)
+                perimeter += corners
     return area, perimeter
 
 

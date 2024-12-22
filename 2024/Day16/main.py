@@ -2,8 +2,9 @@ import heapq
 from AOC import AOC, getDateYear, moveOffets, addTuples, subtractTuples
 from TerminalColors import *
 from math import inf
+from collections import defaultdict
 
-testing = True
+testing = False
 direction_costs = {
     ">": {">": 1, "^": 1001, "v": 1001, "<": 1},
     "^": {">": 1001, "^": 1, "v": 1, "<": 1001},
@@ -98,6 +99,41 @@ def dijkstra(graph, start, goal):
     return None, float("inf")
 
 
+def dijkstra_all_shortest_paths(graph, start, end):
+    # Priority queue: (cost, node, path)
+    pq = [(0, start, [start])]
+    # Dictionary to store the minimum cost to reach each node
+    min_cost = {start: 0}
+    # Dictionary to store all shortest paths to each node
+    paths = defaultdict(list)
+    paths[start].append([start])
+
+    while pq:
+        cost, node, path = heapq.heappop(pq)
+
+        # If this cost exceeds the recorded min cost, skip
+        if cost > min_cost[node]:
+            continue
+
+        # Explore neighbors
+        for neighbor, weight in graph[node].items():
+            new_cost = cost + weight
+
+            # If a better cost is found, update and reset paths
+            if new_cost < min_cost.get(neighbor, float("inf")):
+                min_cost[neighbor] = new_cost
+                paths[neighbor] = [path + [neighbor]]
+                heapq.heappush(pq, (new_cost, neighbor, path + [neighbor]))
+
+            # If the same cost is found, add the new path
+            elif new_cost == min_cost[neighbor]:
+                paths[neighbor].append(path + [neighbor])
+                heapq.heappush(pq, (new_cost, neighbor, path + [neighbor]))
+
+    # Return all shortest paths to the end node
+    return paths[end], min_cost[end]
+
+
 def part1(dataInput):
     start_pos, end_poses, graph = dataInput
     best_route_cost = inf
@@ -107,12 +143,24 @@ def part1(dataInput):
         print(len(route), cost)
         if cost < best_route_cost:
             best_route_cost = cost
-            best_route = route
     print(best_route_cost)
 
 
 def part2(dataInput):
-    pass
+    start_pos, end_poses, graph = dataInput
+    best_route_cost = inf
+    for end_pos in end_poses:
+        print(start_pos, end_pos)
+        route, cost = dijkstra_all_shortest_paths(graph, start_pos, end_pos)
+        print(len(route), cost)
+        if cost < best_route_cost:
+            best_route_cost = cost
+            all_positions = []
+            for r in route:
+                all_positions += [x[0] for x in r]
+            best_route_len = len(list(set(all_positions)))
+
+    print(best_route_cost, best_route_len)
 
 
 def main():
@@ -123,7 +171,7 @@ def main():
     codeInput = AOC(codeDate, codeYear, test=testing)
     dataInput = parse_input(codeInput)
 
-    part1(dataInput)
+    # part1(dataInput)
     part2(dataInput)
 
 
