@@ -1,4 +1,5 @@
 from math import inf
+from itertools import permutations
 import string
 import heapq
 from AOC import AOC, getDateYear, moveOffets, addTuples, insideGrid
@@ -47,7 +48,7 @@ def print_grid_inprocess(locs: dict, blocks: list):
     print()
 
 
-def dijkstra(graph, start, goal, corr_mem):
+def dijkstra(graph, start, goal):
     """
     Perform Dijkstra's algorithm to find the shortest path from start to goal.
 

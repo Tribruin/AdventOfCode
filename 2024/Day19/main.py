@@ -58,14 +58,35 @@ def part1(dataInput):
     print(len(valid_patterns), len(cache))
 
 
+def find_all_combos(pattern, towel_combos, depth=0):
+    if pattern in cache:
+        return cache[pattern]
+    total = 0
+    for towel in towel_combos:
+        if pattern.startswith(towel):
+            new_pattern = pattern.replace(towel, "", 1)
+            if len(new_pattern) == 0:
+                cache[pattern] = cache.get(pattern, 0) + 1
+                return 1
+            else:
+                total = find_all_combos(new_pattern, towel_combos, depth + 1)
+    cache[pattern] = cache.get(pattern, 0) + total
+    return total
+
+
 def part2(dataInput):
+    cache.clear()
     towels, patterns = dataInput
     for towel in towels:
         towel_combos[towel] = list()
         for other_towel in towels:
             if other_towel.startswith(towel):
                 towel_combos[towel].append(other_towel)
-    pass
+
+    total_combos = 0
+    for pattern in patterns:
+        total_combos += find_all_combos(pattern, towels)
+    print(total_combos)
 
 
 def main():
