@@ -1,7 +1,7 @@
 from AOC import AOC, getDateYear
 from TerminalColors import *
 
-testing = True
+testing = False
 cache = {}
 towel_combos = {}
 
@@ -23,10 +23,7 @@ def find_if_valid_pattern(towels, pattern, depth=0):
     check_towels = [x for x in towels if pattern.startswith(x)]
     available_towels = towels.copy()
     for towel in check_towels:
-        # print(f"Checking {towel} in {pattern} - {depth}")
-        # if pattern.startswith(towel):
         new_pattern = pattern.replace(towel, "", 1)
-        # available_towels.remove(towel)
         if len(new_pattern) == 0:
             cache[pattern] = True
             return True
@@ -37,8 +34,6 @@ def find_if_valid_pattern(towels, pattern, depth=0):
             if valid_pattern:
                 cache[pattern] = True
                 return True
-    # else:
-    #         continue
     cache[pattern] = False
     return False
 
@@ -48,44 +43,64 @@ def part1(dataInput):
 
     valid_patterns = []
     for idx, pattern in enumerate(patterns):
-        # print(f"{idx}/{pattern}")
-        print(f"{idx}/{pattern}", end="")
+        # print(f"{idx}/{pattern}", end="")
         if find_if_valid_pattern(towels, pattern):
             valid_patterns.append(pattern)
-            print(" - Valid")
+            # print(" - Valid")
         else:
-            print(" - Invalid")
-    print(len(valid_patterns), len(cache))
+            pass
+            # print(" - Invalid")
+    print(len(valid_patterns))
 
 
-def find_all_combos(pattern, towel_combos, depth=0):
-    if pattern in cache:
-        return cache[pattern]
-    total = 0
-    for towel in towel_combos:
-        if pattern.startswith(towel):
-            new_pattern = pattern.replace(towel, "", 1)
-            if len(new_pattern) == 0:
-                cache[pattern] = cache.get(pattern, 0) + 1
-                return 1
-            else:
-                total = find_all_combos(new_pattern, towel_combos, depth + 1)
-    cache[pattern] = cache.get(pattern, 0) + total
-    return total
+def find_combinations_with_cache(base_blocks, target_line, depth=0):
+    # Cache to store results for each remaining string
+    cache = {}
+
+    # @cache
+    def backtrack(remaining, depth):
+        print(f"Depth: {depth}")
+        # If the result for this state is cached, return it
+        if remaining in cache:
+            return cache[remaining]
+
+        # Base case: If the target string is fully matched, return one empty combination
+        if not remaining:
+            return [[]]
+
+        # Store combinations for this state
+        combinations = []
+
+        for block in base_blocks:
+            if remaining.startswith(
+                block
+            ):  # Check if block matches the start of the remaining string
+                # Recurse with the remaining string after removing the current block
+                for sub_combination in backtrack(remaining[len(block) :], depth + 1):
+                    combinations.append([block] + sub_combination)
+
+        # Store result in cache before returning
+        cache[remaining] = combinations
+        return combinations
+
+    # Start backtracking and return results
+    return backtrack(target_line, depth)
 
 
 def part2(dataInput):
-    cache.clear()
+
+    # I HAVE NO IDEA HOW TO DO THIS
+    # See test.py for the solution
+
     towels, patterns = dataInput
-    for towel in towels:
-        towel_combos[towel] = list()
-        for other_towel in towels:
-            if other_towel.startswith(towel):
-                towel_combos[towel].append(other_towel)
+    valid_patterns = [x for x in patterns if cache[x] == True]
 
     total_combos = 0
-    for pattern in patterns:
-        total_combos += find_all_combos(pattern, towels)
+    for pattern in valid_patterns:
+        print(f"Pattern: {pattern}")
+        combos = find_combinations_with_cache(towels, pattern, depth=0)
+        total_combos += len(combos)
+        print(f"{len(combos)} - {total_combos}")
     print(total_combos)
 
 
@@ -97,7 +112,7 @@ def main():
     codeInput = AOC(codeDate, codeYear, test=testing)
     dataInput = parse_input(codeInput)
 
-    # part1(dataInput)
+    part1(dataInput)
     part2(dataInput)
 
 

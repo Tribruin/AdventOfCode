@@ -173,6 +173,32 @@ class AOC:
         array = [[int(x) for x in y] for y in array]
         return array
 
+    def read_graph_as_coordinates(self) -> dict:
+        """Reads the input file of a 2D grid and returns a dictionary of the graph
+
+        Returns:
+            dict: Dictionary with characters as keys and values as a list of coordinates
+                    Note: coordinates are (y,x)
+        """
+        graph = dict()
+        for y, line in enumerate(self.lines):
+            for x, chr in enumerate(line):
+                graph[chr] = graph.get(chr, []) + [(y, x)]
+        return graph
+
+    def read_graph_as_values(self) -> dict:
+        """Reads the input file of a 2D grid and returns a dictionary of the graph
+
+        Returns:
+            dict: Dictionary with coordinates as keys and values as the character in the grid
+                    Note: coordinates are (y,x)
+        """
+        graph = dict()
+        for y, line in enumerate(self.lines):
+            for x, chr in enumerate(line):
+                graph[(y, x)] = chr
+        return graph
+
 
 def addTuples(a: tuple, b: tuple) -> tuple:
     """Add two tuples together:

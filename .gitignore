@@ -141,3 +141,4 @@ dmypy.json
 AdventOfCode.code-workspace
 requirements.txt
 __pycache__
+2024/Day19/test.py

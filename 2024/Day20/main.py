@@ -105,8 +105,8 @@ def run_race(open_spots, start, end):
 
     path, cost = dijkstra(graph, start, end)
     if path is None:
-        return None
-    return cost
+        return None, None
+    return path, cost
 
 
 def part1(dataInput):
@@ -114,31 +114,26 @@ def part1(dataInput):
     open_spots += [start, end]
     speed_gt_hundred = 0
     # print_grid(walls, open_spots, start, end)
-    base_speed = run_race(open_spots, start, end)
+    base_path, base_speed = run_race(open_spots, start, end)
 
-    poss_cheats = [(y, x) for y in range(1, max_y - 1) for x in range(1, max_x - 1)]
+    poss_cheats = [
+        (y, x)
+        for y in range(1, max_y - 1)
+        for x in range(1, max_x - 1)
+        if (y, x) in walls
+    ]
     poss_cheat_pairs = list()
     for poss_cheat in poss_cheats:
-        cheat_neighors = get_neighbors(poss_cheat, poss_cheats + open_spots)
+        cheat_neighors = get_neighbors(poss_cheat, open_spots)
         for cheat_neighbor in cheat_neighors:
-            if poss_cheat in open_spots and cheat_neighbor in open_spots:
-                # If both postions are open spots, we don't need to cheat
-                continue
-            # Check to see if the reverse is already in the list of cheat, eliminating duplicates
-            if (
-                cheat_neighbor,
-                poss_cheat,
-            ) not in poss_cheat_pairs and cheat_neighbor in poss_cheats:
-                poss_cheat_pairs.append((poss_cheat, cheat_neighbor))
+            poss_cheat_pairs.append((poss_cheat, cheat_neighbor))
 
     print(f"Total Poss Cheats: {len(poss_cheat_pairs)}")
 
-    poss_cheat_pairs = [((7, 6), (7, 5))]
-
     cheat_savings = dict()
     for poss_cheat_pair in poss_cheat_pairs:
-        check_open_spots = open_spots.copy()
-        check_open_spots += poss_cheat_pair
+        check_open_spots = open_spots.copy() + [poss_cheat_pair[0]]
+        check_open_spots = list(set(check_open_spots))
         check_speed = run_race(check_open_spots, start, end)
         speed_savings = base_speed - check_speed
         if speed_savings > 0:
